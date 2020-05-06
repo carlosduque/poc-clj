@@ -1,0 +1,17 @@
+*ns*
+ns
+(ns picture-gallery.db.core)
+(dir)
+(to-date '2019-05-05')
+(to-date 289876)
+exit
+quit
+(ns picture-gallery.db.core)
+(to-date 2341234)
+(ns picture-gallery.routes.services.auth)
+(register! {} {:id "foo" :pass "12345678" :pass-confirm "12345678"})
+(ns picture-gallery.db.core)
+(conman/bind-connection *db* "sql/queries.sql")
+exit
+:cljs/quit
+quit

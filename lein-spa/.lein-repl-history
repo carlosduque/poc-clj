@@ -1,0 +1,13 @@
+(go)
+(cljs-repl)
+exit
+(go)
+exit
+(in-ns 'cheese.taxonomy)
+(def cheddars ["mild" "medium" "strong" "sharp"])
+(def bries ["Wisconsin" "Somerset" "Brie de Meaux"])
+(in-ns 'cheese.analysis)
+(clojure.core/refer 'cheese.taxonomy)
+bries
+cheddars
+exit

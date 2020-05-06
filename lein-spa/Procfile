@@ -1,0 +1,1 @@
+web: java $JVM_OPTS -cp target/lein-spa.jar clojure.main -m lein-spa.server
