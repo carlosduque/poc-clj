@@ -35,6 +35,18 @@ work-to-do
 
 (deref work-to-do)
 
+;; real world
+(defn get-document-delay [id]
+  {:url "http://www.mozilla.org/about/manifesto.en.html"
+   :title "The Mozilla Manifesto"
+   :mime "text/html"
+   :content (delay (slurp "http://www.mozilla.org/about/manifesto.en.html"))})
+
+(def d (get-document-delay "some-id"))
+(realized? (:content d))
+@(:content d)
+(realized? (:content d))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; promise
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -52,6 +64,16 @@ iou
 (realized? iou)
 (deref iou)
 
+;;;;;
+(def a (promise))
+(def b (promise))
+(def c (promise))
+
+(future (deliver c (+ @a @b))
+        (println "delivery completed"))
+(deliver a 15)
+(deliver b 16)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; future
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -59,6 +81,7 @@ iou
 ;; that will execute in another thread
 (future (println "running in another thread !!!"))
 
+; real world
 ;we usually want to keep a reference to get the value out
 (defn very-long [a b]
   (Thread/sleep 5000)
@@ -79,3 +102,10 @@ iou
     (* @x @y @z)))
 
 (time (fast-run))
+
+
+(defn get-document-future [id]
+  {:url "http://www.mozilla.org/about/manifesto.en.html"
+   :title "The Mozilla Manifesto"
+   :mime "text/html"
+   :content (future (slurp "http://www.mozilla.org/about/manifesto.en.html"))})
