@@ -29,7 +29,7 @@
 
 ;;Agents: asynchronous uncoordinated
 
-(def book-1 "http://www.gutenberg.org/cache/epub/103/pg103.txt")
+(def book-1 "http://www.gutenberg.org/cache/epub/103/pg103.epub")
 (def book-2 "http://www.gutenberg.org/cache/epub/996/pg996.txt")
 
 (defn fetch-books [urls]

@@ -31,12 +31,10 @@
        (BigInteger. 1)
        (format "%32x")))
 
-(defn create-doc-fetcher
-  [url fn-fetcher]
-  (let [url url
-        id (md5 url)]
-    {:id id
-     :url url
-     :mime "text/plain"
-     :content fn-fetcher}))
-
+(defn create-fetcher [fn-fetcher]
+  (fn [url]
+    (let [id (md5 url)]
+      {:id id
+       :url url
+       :mime "text/plain"
+       :content (fn-fetcher url)})))

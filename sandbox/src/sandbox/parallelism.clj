@@ -2,14 +2,16 @@
   (:require [sandbox.util :refer :all])
   (:gen-class))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PARAllELISM
 ; Executing more than one task at the same time
 ; this file shows the use of threads for parallel processing
 
-;;; a typical thread
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; THREAD: a typical thread
 (.start (Thread. (println "I am unique:" (.getName (Thread/currentThread)))))
 
-;;; with a thread pool
+;;; POOL: with a thread pool
 (import 'java.util.concurrent.Executors)
 (def processors (.availableProcessors (Runtime/getRuntime)))
 (defonce pool (Executors/newFixedThreadPool processors))
@@ -21,10 +23,11 @@
     (fn [i] (println "#" i ":" (.getName (Thread/currentThread))))))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; COMMUNICATIONS
 ;;; communicating between threads / getting results
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; delay
-;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;; delay
 ;; object that represents a unit of work but you may not need it
 ;; so it doesn't execute yet
 (def work-to-do (delay (long-calculation "delay")))
@@ -36,15 +39,19 @@ work-to-do
 (.start (Thread. (deref work-to-do))) ;
 ;realization should be true now
 (realized? work-to-do)
-
 (deref work-to-do)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; promise
-;;;;;;;;;;;;;;;;;;;;;;;;;
+;; real world
+(def dracula "http://www.gutenberg.org/cache/epub/345/pg345.txt")
+(def delayed-fetcher (create-fetcher #(delay (slurp %))))
+(def doc-fetched (delayed-fetcher dracula))
+(realized? (:content doc-fetched))
+@(:content doc-fetched) ;; will get the contents of the book now at deref time!
+(realized? (:content doc-fetched))
+
+;;;;;;;; promise
 ;; object that represents a value that will be delivered
 ;; later and probably by some other thread
-
 (def iou (promise))
 ;check status, should be "pending"
 iou
@@ -56,9 +63,8 @@ iou
 (realized? iou)
 (deref iou)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; future
-;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;; future
 ;; represents the result of a function
 ;; that will execute in another thread
 (future (println "running in another thread !!!"))
@@ -83,4 +89,10 @@ iou
     (* @x @y @z)))
 
 (time (fast-run))
+
+;; real world
+(def future-fetcher (create-fetcher #(future (slurp %))))
+(def doc-fetched (future-fetcher dracula))
+(realized? (:content doc-fetched)) ;content may not be there yet, it's been retrieved
+(:content doc-fetched) ;; content is already there fetched by a future
 

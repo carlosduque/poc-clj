@@ -48,13 +48,10 @@
 
 (deref entry)
 
-
-
 ;;agents
 ;;agents
-(def book-1 "http://www.gutenberg.org/cache/epub/103/pg103.txt")
-(def book-2 "http://www.gutenberg.org/cache/epub/996/pg906.txt")
-
+(def don-quixote "http://www.gutenberg.org/cache/epub/996/pg996.epub")
+(def dracula "http://www.gutenberg.org/cache/epub/345/pg345.txt")
 (defn fetch-books [urls]
   (let [agents (map agent urls)]
     (doseq [ag agents]
@@ -63,5 +60,5 @@
       (doall
              (map deref agents)))))
 
-(fetch-books [book-1 book-2])
+(fetch-books [dracula don-quixote])
 
