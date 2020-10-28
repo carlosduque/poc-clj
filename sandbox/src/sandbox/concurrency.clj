@@ -8,6 +8,7 @@
 
 ;;refs
 ;managed reference for sync and coord changes
+; atomic, consistent, isolated -> ACI
 (def initial-balance 1000)
 (def account1 (ref initial-balance))
 (def account2 (ref 0))
@@ -26,8 +27,11 @@
 ;check balance, if not sync'd we'd get a false
 (= initial-balance (+ @account1 @account2))
 
+;;;;;;;;;;;;;;;;;;;;;
 ;;atoms
+;;;;;;;;;;;;;;;;;;;;;
 ;use for synchronized but uncoordinated changes
+;compare and set
 (def entry (atom {:num 0 :code ""}))
 (defn change-it [e]
   (swap! e (comp #(update-in % [:num] inc)
