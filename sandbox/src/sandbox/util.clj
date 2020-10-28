@@ -1,4 +1,6 @@
 (ns sandbox.util
+  (:import java.security.MessageDigest
+           java.math.BigInteger)
   (:gen-class))
 
 (defn uuid []
@@ -17,3 +19,24 @@
     (Thread/sleep random-time-in-ms)
     (println "slept" random-time-in-ms "ms")
     result))
+
+(defmacro with-new-thread [& body]
+  `(.start (Thread. (fn [] ~@body))))
+
+(defn md5
+  [^String s]
+  (->> s
+       .getBytes
+       (.digest (MessageDigest/getInstance "MD5"))
+       (BigInteger. 1)
+       (format "%32x")))
+
+(defn create-doc-fetcher
+  [url fn-fetcher]
+  (let [url url
+        id (md5 url)]
+    {:id id
+     :url url
+     :mime "text/plain"
+     :content fn-fetcher}))
+
