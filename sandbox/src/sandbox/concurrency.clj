@@ -28,8 +28,8 @@
 ;check balance, if not sync'd we'd get a false
 (= initial-balance (+ @account1 @account2))
 
-(util/with-new-thread (fn [] (transfer account1 account2 13)))
-(util/with-new-thread (fn [] (transfer account1 account2 17)))
+(util/with-new-thread (transfer account1 account2 13))
+(util/with-new-thread (transfer account1 account2 17))
 (deref account1)
 (deref account2)
 (= initial-balance (+ @account1 @account2))

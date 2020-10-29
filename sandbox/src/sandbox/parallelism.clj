@@ -63,7 +63,6 @@ iou
 (realized? iou)
 (deref iou)
 
-
 ;;;;;;; future
 ;; represents the result of a function
 ;; that will execute in another thread
@@ -96,3 +95,6 @@ iou
 (realized? (:content doc-fetched)) ;content may not be there yet, it's been retrieved
 (:content doc-fetched) ;; content is already there fetched by a future
 
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; REDUCERS
+;;; skip non-parallel natural processing of sequences by using reducers
