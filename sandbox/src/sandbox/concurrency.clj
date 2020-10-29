@@ -48,8 +48,19 @@
 
 (deref entry)
 
+;;;;;;;;;;;;;;;;;;;;;
 ;;agents
-;;agents
+;use for async and uncoordinated stuff
+;each agent has its own queue of actions which are
+;evaluated serially in the order they were sent.
+(def sum (agent 0))
+(dotimes [i 1000]
+  (send sum + 1)) ;not parallel, each send queues the action on the agent's queue
+
+(deref sum)
+;for parallelism you need multiple agents
+
+;real world
 (def don-quixote "http://www.gutenberg.org/cache/epub/996/pg996.epub")
 (def dracula "http://www.gutenberg.org/cache/epub/345/pg345.txt")
 (defn fetch-books [urls]
