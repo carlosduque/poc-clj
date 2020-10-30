@@ -39,3 +39,7 @@
        :mime "text/plain"
        :content (fn-fetcher url)})))
 
+(defn upload-to-chan [value c]
+  (go (Thread/sleep (rand 1000))
+      (>! c value)))
+
